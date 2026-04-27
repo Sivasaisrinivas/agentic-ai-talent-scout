@@ -79,7 +79,7 @@ OpenAI / LLM
 
 # Screenshots
 
-Add screenshots inside:
+Add screenshots in:
 
 ```bash
 screenshots/
@@ -102,7 +102,7 @@ Example:
 
 # Demo Video
 
-Add Loom/Youtube demo link:
+Add Loom / YouTube demo link:
 
 ```text
 https://loom.com/your-demo-link
@@ -170,15 +170,27 @@ cd agentic-ai-talent-scout
 
 ---
 
-# One Command Startup (Frontend + Backend)
+# One Command Setup + Startup
 
-Install root dependency:
+## Install Everything
+
+Run:
 
 ```bash
 npm install
 ```
 
-Run entire stack:
+Automatically installs:
+
+- Root Node dependencies
+- Frontend React dependencies
+- Python backend dependencies (`requirements.txt`)
+
+No separate setup needed.
+
+---
+
+## Run Full Stack
 
 ```bash
 npm run dev
@@ -186,8 +198,8 @@ npm run dev
 
 Starts:
 
-- React frontend
-- FastAPI backend
+- React frontend → http://localhost:5173
+- FastAPI backend → http://localhost:8000
 
 Single command launches full stack.
 
@@ -197,47 +209,41 @@ Single command launches full stack.
 
 ```json
 {
- "scripts": {
-   "frontend":"npm --prefix frontend run dev",
-   "backend":"python -m uvicorn backend.app:app --reload",
-   "dev":"concurrently \"npm run backend\" \"npm run frontend\""
- }
+  "name": "ai-talent-scout",
+  "private": true,
+  "scripts": {
+    "frontend": "cd frontend && npm run dev",
+    "backend": "cd backend && uvicorn app:app --reload",
+
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+
+    "install:frontend": "cd frontend && npm install",
+    "install:backend": "cd backend && python -m pip install -r requirements.txt",
+
+    "postinstall": "npm run install:frontend && npm run install:backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
 }
 ```
 
 ---
 
-# Backend Setup
+# Developer Flow
+
+First time:
 
 ```bash
-cd backend
-
-python -m venv venv
+npm install
+npm run dev
 ```
 
-Activate:
-
-Windows
-
-```bash
-venv\Scripts\activate
-```
-
-Mac/Linux
-
-```bash
-source venv/bin/activate
-```
-
-Install:
-
-```bash
-pip install -r requirements.txt
-```
+Done.
 
 ---
 
-## requirements.txt
+# requirements.txt
 
 ```txt
 fastapi
@@ -263,7 +269,7 @@ Add:
 OPENAI_API_KEY=your_api_key_here
 ```
 
-Example file committed:
+Example:
 
 ```bash
 backend/.env.example
@@ -277,11 +283,7 @@ Never commit real `.env`.
 
 ---
 
-# Run Backend Only
-
-```bash
-uvicorn app:app --reload
-```
+# Backend API Docs
 
 Swagger:
 
@@ -325,23 +327,7 @@ Payload:
 
 ---
 
-# Frontend Setup (Optional Separate)
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Runs:
-
-```text
-http://localhost:5173
-```
-
----
-
-## Frontend Environment
+# Frontend Environment
 
 Create:
 
@@ -357,17 +343,17 @@ VITE_API_URL=http://localhost:8000
 
 # Demo Workflow
 
-1 Recruiter pastes Job Description
+1. Recruiter pastes job description
 
-2 Planner agent builds execution plan
+2. Planner agent builds execution plan
 
-3 AI agents:
+3. AI agents:
 - Analyze JD
 - Rank candidates
 - Simulate outreach
 - Generate shortlist
 
-4 Recruiter receives explainable recommendations
+4. Recruiter receives explainable recommendations
 
 ---
 
@@ -438,28 +424,4 @@ langgraph
 hackathon
 genai
 recruiting
-```
-
----
-
-# Git Push
-
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-
-git remote add origin https://github.com/yourusername/agentic-ai-talent-scout.git
-
-git push -u origin main
-```
-
----
-
-# Demo GIF (Optional)
-
-Add:
-
-```md
-![Demo](demo.gif)
 ```

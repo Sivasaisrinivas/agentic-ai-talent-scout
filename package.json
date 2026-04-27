@@ -1,8 +1,16 @@
 {
- "name":"ai-talent-scout",
- "scripts": {
-   "frontend":"cd frontend && npm run dev",
-   "backend":"cd backend && uvicorn app:app --reload",
-   "dev":"concurrently \"npm run backend\" \"npm run frontend\""
- }
+  "name": "ai-talent-scout",
+  "private": true,
+  "scripts": {
+    "setup": "npm install && npm run postinstall",
+    "frontend": "cd frontend && npm run dev",
+    "backend": "cd backend && uvicorn app:app --reload",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "install:frontend": "cd frontend && npm install",
+    "install:backend": "cd backend && python -m pip install -r requirements.txt",
+    "postinstall": "npm run install:frontend && npm run install:backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
 }
