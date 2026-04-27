@@ -55,8 +55,6 @@ Decision Agent
 END
 ```
 
-Autonomous workflow traces are visible in the UI.
-
 ---
 
 # Architecture
@@ -77,39 +75,6 @@ OpenAI / LLM
 
 ---
 
-# Screenshots
-
-Add screenshots in:
-
-```bash
-screenshots/
-```
-
-Example:
-
-```md
-## Dashboard
-![Dashboard](screenshots/dashboard.png)
-
-## Agent Workflow
-![Workflow](screenshots/agent-workflow.png)
-
-## Candidate Ranking
-![Ranking](screenshots/candidate-ranking.png)
-```
-
----
-
-# Demo Video
-
-Add Loom / YouTube demo link:
-
-```text
-https://loom.com/your-demo-link
-```
-
----
-
 # Tech Stack
 
 ## Frontend
@@ -117,13 +82,11 @@ https://loom.com/your-demo-link
 - Vite
 - Axios
 - React Router
-- TailwindCSS (optional)
 
 ## Backend
 - Python
 - FastAPI
 - Uvicorn
-- Pydantic
 
 ---
 
@@ -132,24 +95,7 @@ https://loom.com/your-demo-link
 ```bash
 ai-talent-scout/
 ├── frontend/
-│   ├── src/
-│   ├── package.json
-│   └── .env.example
-│
 ├── backend/
-│   ├── agents/
-│   │   ├── jd_agent.py
-│   │   ├── match_agent.py
-│   │   ├── outreach_agent.py
-│   │   ├── decision_agent.py
-│   │   └── langgraph_workflow.py
-│   │
-│   ├── app.py
-│   ├── ai_agent.py
-│   ├── candidates.py
-│   ├── requirements.txt
-│   └── .env.example
-│
 ├── screenshots/
 ├── .gitignore
 ├── package.json
@@ -164,44 +110,112 @@ Clone repository:
 
 ```bash
 git clone https://github.com/yourusername/agentic-ai-talent-scout.git
-
 cd agentic-ai-talent-scout
 ```
 
 ---
 
-# One Command Setup + Startup
+# Prerequisites
 
-## Install Everything
+Install first:
 
-Run:
+- Node.js 18+
+- npm
+- Python 3.10+
+
+Check:
+
+```bash
+node -v
+npm -v
+python --version
+```
+
+---
+
+# Step 1 Install Root Dependency (Concurrently)
+
+Install root dependencies:
 
 ```bash
 npm install
 ```
 
-Automatically installs:
+If needed manually install concurrently:
 
-- Root Node dependencies
-- Frontend React dependencies
-- Python backend dependencies (`requirements.txt`)
+```bash
+npm install concurrently --save-dev
+```
 
-No separate setup needed.
+Verify:
+
+```bash
+npx concurrently --version
+```
 
 ---
 
-## Run Full Stack
+# Step 2 Install Frontend Dependencies (Vite + React Packages)
+
+```bash
+cd frontend
+npm install
+```
+
+Verify Vite:
+
+```bash
+npx vite --version
+```
+
+Back to root:
+
+```bash
+cd ..
+```
+
+---
+
+# Step 3 Install Python Backend Dependencies
+
+```bash
+cd backend
+python -m pip install -r requirements.txt
+```
+
+Windows:
+
+```bash
+py -m pip install -r requirements.txt
+```
+
+Verify:
+
+```bash
+python -m uvicorn --version
+```
+
+Back to root:
+
+```bash
+cd ..
+```
+
+---
+
+# One Command Run
+
+Start frontend + backend together:
 
 ```bash
 npm run dev
 ```
 
-Starts:
+Runs:
 
-- React frontend → http://localhost:5173
-- FastAPI backend → http://localhost:8000
-
-Single command launches full stack.
+- Frontend: http://localhost:5173
+- Backend: http://localhost:8000
+- Swagger: http://localhost:8000/docs
 
 ---
 
@@ -213,9 +227,9 @@ Single command launches full stack.
   "private": true,
   "scripts": {
     "frontend": "cd frontend && npm run dev",
-    "backend": "cd backend && uvicorn app:app --reload",
+    "backend": "cd backend && python -m uvicorn app:app --reload",
 
-    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "dev": "npx concurrently \"npm run backend\" \"npm run frontend\"",
 
     "install:frontend": "cd frontend && npm install",
     "install:backend": "cd backend && python -m pip install -r requirements.txt",
@@ -230,16 +244,23 @@ Single command launches full stack.
 
 ---
 
-# Developer Flow
+# First Time Setup (Recommended)
 
-First time:
+Run in order:
 
 ```bash
 npm install
+
+cd frontend
+npm install
+cd ..
+
+cd backend
+python -m pip install -r requirements.txt
+cd ..
+
 npm run dev
 ```
-
-Done.
 
 ---
 
@@ -271,25 +292,11 @@ OPENAI_API_KEY=your_api_key_here
 
 Example:
 
-```bash
-backend/.env.example
-```
-
 ```env
 OPENAI_API_KEY=replace_me
 ```
 
-Never commit real `.env`.
-
----
-
-# Backend API Docs
-
-Swagger:
-
-```text
-http://localhost:8000/docs
-```
+Never commit real secrets.
 
 ---
 
@@ -301,15 +308,11 @@ http://localhost:8000/docs
 POST /rank
 ```
 
----
-
 ## Autonomous Agents
 
 ```http
 POST /autonomous-agents
 ```
-
----
 
 ## LLM Agents
 
@@ -317,7 +320,7 @@ POST /autonomous-agents
 POST /llm-agents
 ```
 
-Payload:
+Example payload:
 
 ```json
 {
@@ -343,17 +346,17 @@ VITE_API_URL=http://localhost:8000
 
 # Demo Workflow
 
-1. Recruiter pastes job description
+1. Recruiter pastes Job Description
 
-2. Planner agent builds execution plan
+2. Planner Agent builds execution graph
 
-3. AI agents:
+3. Agents:
 - Analyze JD
 - Rank candidates
-- Simulate outreach
-- Generate shortlist
+- Generate outreach
+- Produce shortlist
 
-4. Recruiter receives explainable recommendations
+4. Recruiter gets explainable recommendations
 
 ---
 
@@ -361,26 +364,9 @@ VITE_API_URL=http://localhost:8000
 
 - Real LangGraph implementation
 - Resume embeddings + FAISS
-- LinkedIn enrichment
-- Email outreach automation
-- Supervisor routing agents
 - RAG talent search
+- LinkedIn enrichment
 - CrewAI agents
-
----
-
-# Why This Is Different
-
-Traditional ATS:
-- Boolean keyword search
-- Manual screening
-
-This System:
-- Autonomous agents
-- LLM reasoning
-- Explainability
-- AI outreach
-- Talent intelligence
 
 ---
 
@@ -388,19 +374,10 @@ This System:
 
 ## Backend (Render)
 
-Build:
-
 ```bash
 pip install -r requirements.txt
-```
-
-Start:
-
-```bash
 uvicorn app:app --host 0.0.0.0 --port 10000
 ```
-
----
 
 ## Frontend (Vercel)
 
@@ -410,9 +387,23 @@ vercel
 
 ---
 
-# GitHub Topics
+# Git Push
 
-Suggested tags:
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+
+git branch -M main
+
+git remote add origin https://github.com/yourusername/agentic-ai-talent-scout.git
+
+git push -u origin main
+```
+
+---
+
+# GitHub Topics
 
 ```text
 ai
@@ -424,4 +415,44 @@ langgraph
 hackathon
 genai
 recruiting
+```
+
+---
+
+# Troubleshooting
+
+## concurrently not recognized
+
+```bash
+npm install concurrently --save-dev
+```
+
+---
+
+## vite not recognized
+
+```bash
+cd frontend
+npm install
+```
+
+---
+
+## uvicorn not recognized
+
+```bash
+cd backend
+python -m pip install -r requirements.txt
+```
+
+Use:
+
+```bash
+python -m uvicorn app:app --reload
+```
+
+instead of plain:
+
+```bash
+uvicorn app:app --reload
 ```
