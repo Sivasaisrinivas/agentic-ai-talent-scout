@@ -125,16 +125,6 @@ https://loom.com/your-demo-link
 - Uvicorn
 - Pydantic
 
-## AI
-- OpenAI API
-- GPT-4o-mini
-- LangGraph-style orchestration
-
-Optional:
-- Ollama (local models)
-- FAISS vector search
-- Sentence Transformers
-
 ---
 
 # Repository Structure
